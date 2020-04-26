@@ -121,6 +121,7 @@ public class GitlabServerPullRequestDecorator implements PullRequestBuildStatusD
             final String prCommitsURL = mergeRequestURl + "/commits";
             final String mergeRequestDiscussionURL = mergeRequestURl + "/discussions";
 
+            LOGGER.info(String.format("Properties: %s ", analysis.getScannerProperties()));
             LOGGER.info(String.format("Status url is: %s ", statusUrl));
             LOGGER.info(String.format("PR commits url is: %s ", prCommitsURL));
             LOGGER.info(String.format("MR discussion url is: %s ", mergeRequestDiscussionURL));

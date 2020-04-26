@@ -54,12 +54,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AnalysisDetails {
@@ -108,6 +103,10 @@ public class AnalysisDetails {
 
     public QualityGate.Status getQualityGateStatus() {
         return qualityGate.getStatus();
+    }
+
+    public Map<String, String> getScannerProperties() {
+        return scannerContext.getProperties();
     }
 
     public Optional<String> getScannerProperty(String propertyName) {
