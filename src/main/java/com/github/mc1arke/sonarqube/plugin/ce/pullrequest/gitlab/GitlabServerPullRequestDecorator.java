@@ -80,6 +80,8 @@ public class GitlabServerPullRequestDecorator implements PullRequestBuildStatusD
             "sonar.pullrequest.gitlab.projectUrl";
     public static final String PULLREQUEST_GITLAB_PIPELINE_ID =
             "com.github.mc1arke.sonarqube.plugin.branch.pullrequest.gitlab.pipelineId";
+    public static final String PULLREQUEST_GITLAB_TARGET_PROJECT_ID =
+            "sonar.analysis.pullrequest.projectId";
 
     private static final Logger LOGGER = Loggers.get(GitlabServerPullRequestDecorator.class);
     private static final List<String> OPEN_ISSUE_STATUSES =
@@ -112,16 +114,23 @@ public class GitlabServerPullRequestDecorator implements PullRequestBuildStatusD
                     () -> new IllegalStateException(String.format(
                             "Could not decorate Gitlab merge request. '%s' has not been set in scanner properties",
                             PULLREQUEST_GITLAB_PROJECT_ID)));
+            final String targetId = analysis.getScannerProperty(PULLREQUEST_GITLAB_TARGET_PROJECT_ID).orElseThrow(
+                    () -> new IllegalStateException(String.format(
+                            "Could not decorate Gitlab merge request. '%s' has not been set in scanner properties",
+                            PULLREQUEST_GITLAB_TARGET_PROJECT_ID)));
             final String pullRequestId = analysis.getBranchName();
 
             final String projectURL = apiURL + String.format("/projects/%s", URLEncoder.encode(projectId, StandardCharsets.UTF_8.name()));
+            final String targetURL = apiURL + String.format("/projects/%s", URLEncoder.encode(targetId, StandardCharsets.UTF_8.name()));
             final String userURL = apiURL + "/user";
             final String statusUrl = projectURL + String.format("/statuses/%s", revision);
-            final String mergeRequestURl = projectURL + String.format("/merge_requests/%s", pullRequestId);
+            final String mergeRequestURl = targetURL + String.format("/merge_requests/%s", pullRequestId);
             final String prCommitsURL = mergeRequestURl + "/commits";
             final String mergeRequestDiscussionURL = mergeRequestURl + "/discussions";
 
             LOGGER.info(String.format("Properties: %s ", analysis.getScannerProperties()));
+            LOGGER.info(String.format("ProjectUrl: %s ", projectURL));
+            LOGGER.info(String.format("TargetUrl: %s ", projectURL));
             LOGGER.info(String.format("Status url is: %s ", statusUrl));
             LOGGER.info(String.format("PR commits url is: %s ", prCommitsURL));
             LOGGER.info(String.format("MR discussion url is: %s ", mergeRequestDiscussionURL));

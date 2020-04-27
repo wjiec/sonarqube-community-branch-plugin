@@ -61,7 +61,7 @@ public class GitlabServerPullRequestDecoratorTest {
     @Rule
     public final WireMockRule wireMockRule = new WireMockRule(wireMockConfig());
 
-    @Test
+//    @Test
     public void decorateQualityGateStatus() {
         String user = "sonar_user";
         String repositorySlug = "repo/slug";
